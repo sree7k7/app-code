@@ -70,6 +70,7 @@ jobs:
          git config user.name ${{ secrets.GIT_USERID }}
          git clone https://${{ secrets.DOCKERHUB_USERNAME }}:${{ secrets.GIT_APPCODE_PASS }}@github.com/${{ secrets.DOCKERHUB_USERNAME }}/app-config-code-kubernetes.git
          echo "cloned repo"
+         cd app-config-code-kubernetes
          ls
          git pull
          cat ./deploy/deployment.yaml
