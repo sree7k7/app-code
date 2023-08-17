@@ -65,6 +65,7 @@ jobs:
         run: |
          echo "working on pushing tag ${{ steps.meta.outputs.tags }}"
          #!/bin/bash
+         echo "1"
          git config user.email ${{ secrets.USER_EMAIL }}
          git config user.name ${{ secrets.GIT_USERID }}
          git pull
