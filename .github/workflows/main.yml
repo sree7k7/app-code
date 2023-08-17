@@ -37,47 +37,47 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v3
-      # - # -------- tag the image -----
-      #   name: Docker meta
-      #   id: meta
-      #   uses: docker/metadata-action@v4
-      #   with:
-      #       # list of Docker images to use as base name for tags
-      #     images: |
-      #       ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.image_name }}
-      #     # generate Docker tags based on the following events/attributes
-      #     tags: |
-      #       type=schedule
-      #       # type=ref,event=branch
-      #       type=ref,event=pr
-      #       type=semver,pattern={{version}}
-      #       type=semver,pattern={{major}}.{{minor}}
-      #       type=semver,pattern={{major}}
-      #       # type=raw,value=sha
-      #       type=sha
-      # ## -- update script for deploy
-      # # - 
-      # #   name: Run build scriptxx
-      # #   run: ./.github/workflows/build.sh
-      # #   shell: bash
-      # - # --- script to push the image tag in configuration code ----
-      #   name: Custom script
-      #   run: |
-      #    #!/bin/bash
-      #    git config user.email ${{ secrets.USER_EMAIL }}
-      #    git config user.name ${{ secrets.GIT_USERID }}
-      #    # git clone git@github.com:sree7k7/app-config-code-kubernetes.git
-      #    echo "git repo cloned"
-      #    cat ./deploy/deployment.yaml
-      #    sed -i 's+${{ secrets.DOCKERHUB_USERNAME }}/*.*+${{ steps.meta.outputs.tags }}+g' ./deploy/deployment.yaml
-      #    echo "sed worked"
-      #    cat ./deploy/deployment.yaml
-      #    git add .
-      #    git commit -m "version - ${{ steps.meta.outputs.tags }}"
-      #    git push https://${{ secrets.DOCKERHUB_USERNAME }}:${{ secrets.GIT_APPCODE_PASS }}@github.com/${{ secrets.DOCKERHUB_USERNAME }}/app-config-code-kubernetes.git
-         
-      #    echo "pushed code ${{ steps.meta.outputs.tags }}"
+      - # -------- tag the image -----
+        name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+            # list of Docker images to use as base name for tags
+          images: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.image_name }}
+          # generate Docker tags based on the following events/attributes
+          tags: |
+            type=schedule
+            # type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            # type=raw,value=sha
+            type=sha
+      ## -- update script for deploy
+      # - 
+      #   name: Run build scriptxx
+      #   run: ./.github/workflows/build.sh
       #   shell: bash
+      - # --- script to push the image tag in configuration code ----
+        name: Custom script
+        run: |
+         #!/bin/bash
+         git config user.email ${{ secrets.USER_EMAIL }}
+         git config user.name ${{ secrets.GIT_USERID }}
+         # git clone git@github.com:sree7k7/app-config-code-kubernetes.git
+         echo "git repo cloned"
+         cat ./deploy/deployment.yaml
+         sed -i 's+${{ secrets.DOCKERHUB_USERNAME }}/*.*+${{ steps.meta.outputs.tags }}+g' ./deploy/deployment.yaml
+         echo "sed worked"
+         cat ./deploy/deployment.yaml
+         git add .
+         git commit -m "version - ${{ steps.meta.outputs.tags }}"
+         git push https://${{ secrets.DOCKERHUB_USERNAME }}:${{ secrets.GIT_APPCODE_PASS }}@github.com/${{ secrets.DOCKERHUB_USERNAME }}/app-config-code-kubernetes.git
+         
+         echo "pushed code ${{ steps.meta.outputs.tags }}"
+        shell: bash
       ## --- yo! login --
       -
         name: Login to Docker Hub
