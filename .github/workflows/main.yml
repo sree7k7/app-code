@@ -24,7 +24,7 @@ permissions: write-all
         # security-events: write
         # statuses: write
 env:
-    image_name: ter-app
+    image_name: new-app
     LATEST_TAG: ${{ secrets.DOCKERHUB_USERNAME }}
 
 jobs:
