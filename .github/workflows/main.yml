@@ -68,7 +68,8 @@ jobs:
          echo "1"
          git config user.email ${{ secrets.GIT_USER_EMAIL }}
          git config user.name ${{ secrets.GIT_USERID }}
-         git clone git@github.com:sree7k7/app-code.git
+         # git clone git@github.com:sree7k7/app-code.git
+         git clone https://${{ secrets.DOCKERHUB_USERNAME }}:${{ secrets.GIT_APPCODE_PASS }}@github.com/${{ secrets.DOCKERHUB_USERNAME }}/app-code.git
          git pull
          cat ./deploy/deployment.yaml
          sed -i 's+${{ secrets.DOCKERHUB_USERNAME }}/*.*+${{ steps.meta.outputs.tags }}+g' ./k8s-deploy/deployment.yaml
