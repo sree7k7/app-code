@@ -74,7 +74,7 @@ jobs:
          ls
          git pull
          cat ./deploy/deployment.yaml
-         sed -i 's+${{ secrets.DOCKERHUB_USERNAME }}/*.*+${{ steps.meta.outputs.tags }}+g' ./k8s-deploy/deployment.yaml
+         sed -i 's+${{ secrets.DOCKERHUB_USERNAME }}/*.*+${{ steps.meta.outputs.tags }}+g' ./deploy/deployment.yaml
          echo "sed worked"
          cat ./deploy/deployment.yaml
          git add .
