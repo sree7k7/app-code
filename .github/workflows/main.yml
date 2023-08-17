@@ -24,7 +24,7 @@ permissions: write-all
         # security-events: write
         # statuses: write
 env:
-    image_name: next-app
+    image_name: ter-app
     LATEST_TAG: ${{ secrets.DOCKERHUB_USERNAME }}
 
 jobs:
@@ -63,18 +63,18 @@ jobs:
       - # --- script to push the image tag in configuration code ----
         name: Custom script
         run: |
+         echo "working on pushing tag ${{ steps.meta.outputs.tags }}"
          #!/bin/bash
          git config user.email ${{ secrets.USER_EMAIL }}
          git config user.name ${{ secrets.GIT_USERID }}
-         # git clone git@github.com:sree7k7/app-config-code-kubernetes.git
-         echo "git repo cloned"
-         cat ./deploy/deployment.yaml
-         sed -i 's+${{ secrets.DOCKERHUB_USERNAME }}/*.*+${{ steps.meta.outputs.tags }}+g' ./deploy/deployment.yaml
+         git pull
+         cat ./k8s-deploy/deployment.yaml
+         sed -i 's+${{ secrets.DOCKERHUB_USERNAME }}/*.*+${{ steps.meta.outputs.tags }}+g' ./k8s-deploy/deployment.yaml
          echo "sed worked"
-         cat ./deploy/deployment.yaml
+         cat ./k8s-deploy/deployment.yaml
          git add .
          git commit -m "version - ${{ steps.meta.outputs.tags }}"
-         git push https://${{ secrets.DOCKERHUB_USERNAME }}:${{ secrets.GIT_APPCODE_PASS }}@github.com/${{ secrets.DOCKERHUB_USERNAME }}/app-config-code-kubernetes.git
+         git push https://${{ secrets.DOCKERHUB_USERNAME }}:${{ secrets.GIT_PASS }}@github.com/${{ secrets.DOCKERHUB_USERNAME }}/github-action-for-docker.git
          
          echo "pushed code ${{ steps.meta.outputs.tags }}"
         shell: bash
