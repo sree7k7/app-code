@@ -81,7 +81,7 @@ jobs:
          git config user.name ${{ secrets.GIT_USERID }}
          git add .
          git commit -m "version - ${{ steps.meta.outputs.tags }}"
-         git push https://${{ secrets.DOCKERHUB_USERNAME }}:${{ secrets.GIT_APPCODE_PASS }}@github.com/${{ secrets.DOCKERHUB_USERNAME }}/app-config-code-kubernetes.git
+         git push https://${{ secrets.GIT_USERID }}:${{ secrets.GIT_APPCODE_PASS }}@github.com/${{ secrets.DOCKERHUB_USERNAME }}/app-config-code-kubernetes.git
          
          echo "pushed code ${{ steps.meta.outputs.tags }}"
         shell: bash
