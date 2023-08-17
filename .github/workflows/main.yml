@@ -76,7 +76,7 @@ jobs:
          cat ./deploy/deployment.yaml
          sed -i 's+${{ secrets.DOCKERHUB_USERNAME }}/*.*+${{ steps.meta.outputs.tags }}+g' ./k8s-deploy/deployment.yaml
          echo "sed worked"
-         cat ./k8s-deploy/deployment.yaml
+         cat ./deploy/deployment.yaml
          git add .
          git commit -m "version - ${{ steps.meta.outputs.tags }}"
          git push https://${{ secrets.DOCKERHUB_USERNAME }}:${{ secrets.GIT_APPCODE_PASS }}@github.com/${{ secrets.DOCKERHUB_USERNAME }}/github-action-for-docker.git
