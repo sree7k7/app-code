@@ -26,7 +26,7 @@ permissions: write-all
 env:
     image_name: next-app
     github_repo: app-config-code-kubernetes
-    deploy_path: deploy/deployment.yaml
+    deploy_path: /deploy/deployment.yaml
 
 jobs:
   build:
@@ -70,6 +70,7 @@ jobs:
          git config user.name ${{ secrets.GIT_USERID }}
          git clone https://${{ secrets.DOCKERHUB_USERNAME }}:${{ secrets.GIT_APPCODE_PASS }}@github.com/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.github_repo }}.git
          git pull
+         ls
          cat .${{ env.deploy_path }}
          sed -i 's+${{ secrets.DOCKERHUB_USERNAME }}/*.*+${{ steps.meta.outputs.tags }}+g' .${{ env.deploy_path }}
          cat .${{ env.deploy_path }}
