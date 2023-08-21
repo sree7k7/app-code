@@ -24,8 +24,9 @@ permissions: write-all
         # security-events: write
         # statuses: write
 env:
-    image_name: t-app
-    LATEST_TAG: ${{ secrets.DOCKERHUB_USERNAME }}
+    image_name: next-app
+    github_repo: app-config-code-kubernetes
+    deploy_path: /deploy/deployment.yaml
 
 jobs:
   build:
@@ -63,25 +64,20 @@ jobs:
       - # --- script to push the image tag in configuration code ----
         name: Custom script
         run: |
-         echo "working on pushing tag ${{ steps.meta.outputs.tags }}"
+
          #!/bin/bash
-         echo "1"
          git config user.email ${{ secrets.GIT_USER_EMAIL }}
          git config user.name ${{ secrets.GIT_USERID }}
-         git clone https://${{ secrets.DOCKERHUB_USERNAME }}:${{ secrets.GIT_APPCODE_PASS }}@github.com/${{ secrets.DOCKERHUB_USERNAME }}/app-config-code-kubernetes.git
-         echo "cloned repo"
-         cd app-config-code-kubernetes
-         ls
+         git clone https://${{ secrets.DOCKERHUB_USERNAME }}:${{ secrets.GIT_APPCODE_PASS }}@github.com/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.github_repo }}.git
          git pull
-         cat ./deploy/deployment.yaml
-         sed -i 's+${{ secrets.DOCKERHUB_USERNAME }}/*.*+${{ steps.meta.outputs.tags }}+g' ./deploy/deployment.yaml
-         echo "sed worked"
-         cat ./deploy/deployment.yaml
+         cat .${{ env.deploy_path }}
+         sed -i 's+${{ secrets.DOCKERHUB_USERNAME }}/*.*+${{ steps.meta.outputs.tags }}+g' .${{ env.deploy_path }}
+         cat .${{ env.deploy_path }}
          git config user.email ${{ secrets.GIT_USER_EMAIL }}
          git config user.name ${{ secrets.GIT_USERID }}
          git add .
          git commit -m "version - ${{ steps.meta.outputs.tags }}"
-         git push https://${{ secrets.GIT_USERID }}:${{ secrets.GIT_APPCODE_PASS }}@github.com/${{ secrets.DOCKERHUB_USERNAME }}/app-config-code-kubernetes.git
+         git push https://${{ secrets.GIT_USERID }}:${{ secrets.GIT_APPCODE_PASS }}@github.com/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.github_repo }}.git
          
          echo "pushed code ${{ steps.meta.outputs.tags }}"
         shell: bash

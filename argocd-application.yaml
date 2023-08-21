@@ -11,7 +11,7 @@ metadata:
 spec:
   project: default # default namespace. i.e, your deployment created in default namespace
   source:
-    repoURL: https://github.com/sree7k7/app-code #github repo url
+    repoURL: https://github.com/sree7k7/app-code #github repo url for app source code
     targetRevision: HEAD
     path: / #git folder, where the code lies.
   destination:
