@@ -72,6 +72,7 @@ jobs:
          git pull
          echo "cloned and pulled"
          ls
+         cd ${{ env.github_repo }}
          cat .${{ env.deploy_path }}
          sed -i 's+${{ secrets.DOCKERHUB_USERNAME }}/*.*+${{ steps.meta.outputs.tags }}+g' .${{ env.deploy_path }}
          cat .${{ env.deploy_path }}
