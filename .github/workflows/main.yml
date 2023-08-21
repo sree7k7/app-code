@@ -26,7 +26,7 @@ permissions: write-all
 env:
     image_name: next-app
     github_repo: app-config-code-kubernetes
-    deploy_path: /deploy/deployment.yaml
+    deploy_path: deploy/deployment.yaml
 
 jobs:
   build:
